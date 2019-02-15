@@ -1,0 +1,26 @@
+char data_in[9];
+int counter=0;
+
+while(Serial.available() > 0) {
+                // read the incoming byte:
+    char tmp=Serial.read();  
+
+    if (tmp=='\n')
+    {
+                //FORMAT: 'M' proceeded by four four character substrings consisting of 0 or 1 for direction and a three digit pwm value
+                //Example: 'M1255025511270127' would correspond to:
+                //Motor 1 fwd at full speed, Motor 2 rvs at full speed, Motor 3 fwd at half speed, Motor 4 rvs at half speed
+                drive(MOTOR1,atoi[1],data_in.substring(2,5).toInt());
+                drive(MOTOR2,data_in.substring(5,6).toInt(),data_in.substring(6,9).toInt());
+                drive(MOTOR3,data_in.substring(9,10).toInt(),data_in.substring(10,13).toInt());
+                drive(MOTOR4,data_in.substring(13,14).toInt(),data_in.substring(14,17).toInt());
+                Serial.println(data_in);
+                data_in = "";
+                break;
+    }
+    else
+    {
+      data_in[counter]=tmp;
+      counter++;
+    }
+  }
